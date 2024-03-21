@@ -119,13 +119,13 @@ void Simulator::run(int argc, char* argv[]) {
       } else if (strcmp(feType, "doble_dispersion") == 0) {
         fe = new feDobleDispersion<Key>(fd);
         feCheck = true;
-      } else if (strcmp(feType, "random") == 0) {
-        fe = new feRedispersion<Key>(fdp);
+      } else if (strcmp(feType, "redispersion") == 0) {
+        fe = new feRedispersion<Key>(ts);
         feCheck = true;
       }
     }
   }
-  
+
   if (tsCheck && fdCheck && openTable) {
     Tabla_hash_t<Key, DinamicSquence<Key>> table(ts, fd);
     displayMenu<Tabla_hash_t<Key, DinamicSquence<Key>>>(&table);
