@@ -31,7 +31,7 @@ void displayMenu(Table* table) {
       case 'i':
         std::cout << "Insert number> ";
         std::cin >> data;
-        if (table->Insertar(data)){
+        if (table->insert(data)){
           std::cout << "Se almaceno " << data << " correctamente" << std::endl;
         }else{
           std::cout << "No se pudo insertar. " << data << std::endl;
@@ -41,7 +41,7 @@ void displayMenu(Table* table) {
       case 'b':
         std::cout << "Numero a buscar> ";
         std::cin >> data;
-        if (table->Buscar(data)){
+        if (table->search(data)){
           std::cout << data << " esta almacenado" << std::endl;
         }else{
           std::cout << data << " no esta almacenado" << std::endl;
@@ -49,7 +49,7 @@ void displayMenu(Table* table) {
         break;
 
       case 'm': 
-        table->showTabla();
+        table->print();
         break;
 
       case 'q':

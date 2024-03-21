@@ -17,11 +17,11 @@ class DispersionFunction {
 template<class Key>
 class fdModulo: public DispersionFunction<Key>{
   public:
-  fdModulo(const unsigned n): DispersionFunction<Key>(n) {}
+    fdModulo(const unsigned n): DispersionFunction<Key>(n) {}
   
-  unsigned operator()(const Key& k) const {
-    return long(k) % this->nDatos;
-  }
+    unsigned operator()(const Key& k) const {
+      return long(k) % this->nDatos;
+    }
 };
 
 template<class Key>

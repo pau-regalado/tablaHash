@@ -8,7 +8,7 @@ void probar_tabla(Tabla_hash_t<Key>* t){
   Key n;
   for (int i = 0; i < 20; ++i ){
     n = std::rand();
-    t->Insertar(n);
+    t->insert(n);
   }
 } 
 

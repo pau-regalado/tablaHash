@@ -14,7 +14,7 @@ const unsigned kDefaultSize = 10;
 const unsigned kDefaultVector = 3;
 
 template <class Key, class Container=StaticSequence<Key>>
-class Tabla_hash_t{
+class Tabla_hash_t {
 
   public:
     Tabla_hash_t(unsigned tableSize = 0,
@@ -24,11 +24,12 @@ class Tabla_hash_t{
     Tabla_hash_t(unsigned tableSize = 0,
                  DispersionFunction<Key>* fd = nullptr);
 
-
     ~Tabla_hash_t(void);
-    bool Buscar(Key& X);
-    bool Insertar(Key& X);
-    void showTabla(void);
+
+    bool search(Key& X);
+    bool insert(Key& X);
+    
+    void print();
     //int get_intentos(void);
 
   private:
@@ -76,34 +77,33 @@ Tabla_hash_t<Key, Container>::~Tabla_hash_t(void){
 }
 
 template <class Key, class Container>
-bool Tabla_hash_t<Key, Container>::Buscar(Key& X){
+bool Tabla_hash_t<Key, Container>::search(Key& X){
   if (table[(*fd)(X)]->search(X)){
     //sumar_intento();
     return true;
   }
   
-  if (!table[(*fd)(X)]->isFull()) {
-    return false;
+  if (table[(*fd)(X)]->isFull()) {
+    unsigned iter = 1;
+    do{
+      if (table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->search(X)) {
+        return true;
+      }
+      if (!table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->isFull()) {
+        return false;
+      }
+      iter++;
+      //sumar_intento();
+    } while(iter <= tableSize);
   }
-  unsigned iter = 1;
-  do{
-    if (table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->search(X)) {
-      return true;
-    }
-    if (!table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->isFull()) {
-      return false;
-    }
-    iter++;
-    //sumar_intento();
-  } while(iter <= tableSize);
 
   return false;
 }
 
 template <class Key, class Container>
-bool Tabla_hash_t<Key, Container>::Insertar(Key& X){
+bool Tabla_hash_t<Key, Container>::insert(Key& X){
   unsigned iter = 1;
-  if (Buscar(X)) {
+  if (search(X)) {
     return false;
   }
 
@@ -123,7 +123,12 @@ bool Tabla_hash_t<Key, Container>::Insertar(Key& X){
 }
 
 template <class Key, class Container>
-void Tabla_hash_t<Key, Container>::showTabla(void){
+std::ostream& operator<<(std::ostream& os, Tabla_hash_t<Key, Container>& t) {
+  return t.print(os);
+}
+
+template <class Key, class Container>
+void Tabla_hash_t<Key, Container>::print() {
   for (int i = 0; i < this->tableSize; ++i){
     std::cout << "[" << i << "]: ";
     this->table[i]->print();
