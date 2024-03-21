@@ -4,30 +4,31 @@
 #include <random>
 
 template<class Key>
-class DispersionFunction{
+class DispersionFunction {
   
   public:
+    DispersionFunction(const unsigned nDatos) : nDatos(nDatos) { }
     virtual unsigned operator()(const Key& k) const = 0;
+
+  protected:
+    unsigned nDatos;
 };
 
 template<class Key>
 class fdModulo: public DispersionFunction<Key>{
   public:
-  fdModulo(const unsigned n): nDatos(n){}
+  fdModulo(const unsigned n): DispersionFunction<Key>(n) {}
   
   unsigned operator()(const Key& k) const {
-    return long(k) % nDatos;
+    return long(k) % this->nDatos;
   }
-  
-  private:
-    unsigned nDatos;
 };
 
 template<class Key>
 class fdSuma: public DispersionFunction<Key>{
   public:
 
-    fdSuma(const unsigned n): nDatos(n){}
+    fdSuma(const unsigned n): DispersionFunction<Key>(n) {}
     
     unsigned operator()(const Key& k) const {
       int y, d = 0;
@@ -37,24 +38,20 @@ class fdSuma: public DispersionFunction<Key>{
         d += y;
         x /= 10;
       }
-      return d % nDatos;
+      return d % this->nDatos;
     }
-  private:
-    unsigned nDatos;
 };
 
 template<class Key>
 class fdrandom: public DispersionFunction<Key>{
   public:
 
-    fdrandom(const unsigned n): nDatos(n){}
+    fdrandom(const unsigned n): DispersionFunction<Key>(n) {}
     
     unsigned operator()(const Key& k) const {
       srand(long(k));
-      return rand() % nDatos;
+      return rand() % this->nDatos;
     }
-  private:
-    unsigned nDatos;
 };
 
 #endif

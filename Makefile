@@ -7,7 +7,7 @@ LIBRARIES   :=
 
 EXECUTABLE  := run
 PARAMS    	:= -ts 5 -fd modulo -hash close -bs 3 -fe lineal
-PARAMSOPEN  := -ts 5 -fd modulo -hash open
+PARAMSOPEN  := -ts 5 -fd suma -hash open
 
 SOURCES := $(wildcard $(SRC)/*.cc)
 OBJS	:= $(patsubst $(SRC)/%.cc,$(BUILD)/%.o,$(SOURCES))
