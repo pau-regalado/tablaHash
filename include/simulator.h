@@ -23,7 +23,7 @@ void insertRandomKeys(Table* table, unsigned n){
   Key d;
   for (int i = 0; i < n; ++i ){
     d = std::rand();
-    table->insert();
+    table->insert(d);
   }
 } 
 
