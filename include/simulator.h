@@ -66,7 +66,7 @@ void displayMenu(Table* table) {
         std::cout << "Numero de datos aleatorios a insertar> ";
         std::cin >> n;
         insertRandomKeys(table, n);
-        std::cout << data << "Se almacenaron " << n << " datos aleatorios" << std::endl;
+        std::cout << "Se almacenaron " << n << " datos aleatorios" << std::endl;
         break;
 
       case 'q':
