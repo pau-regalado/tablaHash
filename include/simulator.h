@@ -13,10 +13,19 @@ typedef Nif Key;
 void showmenu(void){
   std::cout << "i) Insertar elemento" << std::endl;
   std::cout << "b) Buscar elemento" << std::endl;
-  std::cout << "m) mostrar tabla" << std::endl;
-  std::cout << "l) Esta lleno?" << std::endl;
+  std::cout << "m) Mostrar tabla" << std::endl;
+  std::cout << "r) Insertar datos aleatorios" << std::endl;
   std::cout << "q) Salir" << std::endl;
 }
+
+template <class Table>
+void insertRandomKeys(Table* table, unsigned n){
+  Key d;
+  for (int i = 0; i < n; ++i ){
+    d = std::rand();
+    table->insert();
+  }
+} 
 
 template <class Table>
 void displayMenu(Table* table) {
@@ -50,6 +59,14 @@ void displayMenu(Table* table) {
 
       case 'm': 
         table->print();
+        break;
+
+      case 'r':
+        int n;
+        std::cout << "Numero de datos aleatorios a insertar> ";
+        std::cin >> n;
+        insertRandomKeys(table, n);
+        std::cout << data << "Se almacenaron " << n << " datos aleatorios" << std::endl;
         break;
 
       case 'q':
