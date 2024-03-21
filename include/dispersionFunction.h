@@ -16,7 +16,7 @@ class fdModulo: public DispersionFunction<Key>{
   fdModulo(const unsigned n): nDatos(n){}
   
   unsigned operator()(const Key& k) const {
-    return k % nDatos;
+    return long(k) % nDatos;
   }
   
   private:
@@ -31,7 +31,7 @@ class fdSuma: public DispersionFunction<Key>{
     
     unsigned operator()(const Key& k) const {
       int y, d = 0;
-      int x = k;
+      int x = long(k);
       while (x > 0) {
         y = x % 10;
         d += y;
@@ -50,7 +50,7 @@ class fdrandom: public DispersionFunction<Key>{
     fdrandom(const unsigned n): nDatos(n){}
     
     unsigned operator()(const Key& k) const {
-      srand(k);
+      srand(long(k));
       return rand() % nDatos;
     }
   private:

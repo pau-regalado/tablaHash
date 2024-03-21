@@ -21,21 +21,119 @@ class Tabla_hash_t{
                  unsigned blockSize = 0,
                  DispersionFunction<Key>* fd = nullptr,
                  ExplorationFunction<Key>* fe = nullptr);
+    Tabla_hash_t(unsigned tableSize = 0,
+                 DispersionFunction<Key>* fd = nullptr);
+
 
     ~Tabla_hash_t(void);
     bool Buscar(Key& X);
     bool Insertar(Key& X);
     void showTabla(void);
-    void sumar_intento(void);
-    std::vector<Sequence<Key>*>& get_v(void);
-    void change_fe(ExplorationFunction<Key>* newfe);
-    int get_intentos(void);
+    //int get_intentos(void);
 
   private:
-    unsigned tableSize_;
-    unsigned blockSize_;
-    std::vector<Sequence<Key>*> table_;
-    DispersionFunction<Key>* fd_;
-    ExplorationFunction<Key>* fe_;
+    unsigned tableSize;
+    unsigned blockSize;
+    std::vector<Sequence<Key>*> table;
+    DispersionFunction<Key>* fd;
+    ExplorationFunction<Key>* fe;
+
 };
+
+template <class Key, class Container>
+Tabla_hash_t<Key, Container>::Tabla_hash_t(unsigned tableSize, DispersionFunction<Key>* fd) {
+  this->tableSize = tableSize;
+  this->fd = fd;
+  this->fe = nullptr;
+  this->table.resize(tableSize);
+  for (int i = 0; i < tableSize; ++i){
+    this->table[i] = new DinamicSquence<Key>;
+  }                   
+}
+
+template <class Key, class Container>
+Tabla_hash_t<Key, Container>::Tabla_hash_t(unsigned tableSize,
+                  unsigned blockSize,
+                  DispersionFunction<Key>* fd,
+                  ExplorationFunction<Key>* fe) {
+  this->tableSize = tableSize;
+  this->fd = fd;
+  this->blockSize = blockSize;
+  this->table.resize(tableSize);
+  this->fe = fe;
+    
+  for (int i = 0; i < tableSize; ++i){
+    this->table[i] = new StaticSequence<Key>(blockSize);
+  }
+}
+
+template <class Key, class Container>
+Tabla_hash_t<Key, Container>::~Tabla_hash_t(void){
+  if (fe != nullptr) {  
+    delete fe;
+  } 
+  delete fd;
+}
+
+template <class Key, class Container>
+bool Tabla_hash_t<Key, Container>::Buscar(Key& X){
+  if (table[(*fd)(X)]->search(X)){
+    //sumar_intento();
+    return true;
+  }
+  
+  if (!table[(*fd)(X)]->isFull()) {
+    return false;
+  }
+  unsigned iter = 1;
+  do{
+    if (table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->search(X)) {
+      return true;
+    }
+    if (!table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->isFull()) {
+      return false;
+    }
+    iter++;
+    //sumar_intento();
+  } while(iter <= tableSize);
+
+  return false;
+}
+
+template <class Key, class Container>
+bool Tabla_hash_t<Key, Container>::Insertar(Key& X){
+  unsigned iter = 1;
+  if (Buscar(X)) {
+    return false;
+  }
+
+  if (!this->table[(*fd)(X)]->isFull()){
+    return this->table[(*fd)(X)]->insert(X);
+    //sumar_intento();
+  } else {
+    do{
+      if(!this->table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->isFull()){
+        return this->table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->insert(X);
+      } 
+      iter++;
+      //sumar_intento();
+    } while(iter <= this->tableSize);
+  }
+  return false;
+}
+
+template <class Key, class Container>
+void Tabla_hash_t<Key, Container>::showTabla(void){
+  for (int i = 0; i < this->tableSize; ++i){
+    std::cout << "[" << i << "]: ";
+    this->table[i]->print();
+    std::cout << std::endl;
+  }
+}
+
+/*template <class Key, class Container>
+int Tabla_hash_t<Key, Container>::get_intentos(void){
+    return intentos_;
+}*/
+
 #endif
