@@ -12,21 +12,18 @@ class ExplorationFunction {
 
 template<class Key>
 class feLineal: public ExplorationFunction<Key>{
-  
   public:
     unsigned operator()(const Key& k, unsigned i) const { return i; }
 };
 
 template<class Key>
 class feCuadratica: public ExplorationFunction<Key>{
-  
   public:
     unsigned operator()(const Key& k, unsigned i) const { return i * i; }
 };
 
 template<class Key>
 class feDobleDispersion: public ExplorationFunction<Key>{
-
   public:
     feDobleDispersion(DispersionFunction<Key>* fd): fd_(fd) {}
     feDobleDispersion(void){ delete fd_; }
@@ -51,4 +48,5 @@ class feRedispersion: public ExplorationFunction<Key>{
   private:
     std::vector<DispersionFunction<Key>*> family;
 };
+
 #endif

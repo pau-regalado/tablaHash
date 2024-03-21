@@ -123,11 +123,6 @@ bool Tabla_hash_t<Key, Container>::insert(Key& X){
 }
 
 template <class Key, class Container>
-std::ostream& operator<<(std::ostream& os, Tabla_hash_t<Key, Container>& t) {
-  return t.print(os);
-}
-
-template <class Key, class Container>
 void Tabla_hash_t<Key, Container>::print() {
   for (int i = 0; i < this->tableSize; ++i){
     std::cout << "[" << i << "]: ";

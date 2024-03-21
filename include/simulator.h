@@ -10,6 +10,11 @@
 
 typedef Nif Key;
 
+class Simulator {
+  public:
+    void run(int argc, char* argv[]);
+};
+
 void showmenu(void){
   std::cout << "i) Insertar elemento" << std::endl;
   std::cout << "b) Buscar elemento" << std::endl;
@@ -79,11 +84,6 @@ void displayMenu(Table* table) {
   }
 }
 
-class Simulator {
-  public:
-    void run(int argc, char* argv[]);
-};
-
 void Simulator::run(int argc, char* argv[]) {
   bool tsCheck, bsCheck = false;
   bool fdCheck = false;
@@ -93,7 +93,6 @@ void Simulator::run(int argc, char* argv[]) {
 
   DispersionFunction<Key>* fd;
   ExplorationFunction<Key>* fe;
-  DispersionFunction<Key>* fdp;
 
   for (int i = 1; i < argc; ++i) {
     if (strcmp(argv[i], "-ts") == 0 && i + 1 < argc) {

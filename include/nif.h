@@ -30,9 +30,9 @@ public:
   }
 
   friend std::istream& operator>>(std::istream& is, Nif& nif) {
-      long num;
-      is >> num;
-      nif.setNum(num);
-      return is;
+    long num;
+    is >> num;
+    nif.setNum(num);
+    return is;
   }
 };
