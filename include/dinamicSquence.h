@@ -50,9 +50,10 @@ bool DinamicSquence<Key>::insert(const Key& X){
 
 template <class Key>
 void DinamicSquence<Key>::print() {
-  for (int i = 0; i < self.size(); ++i){
-    std::cout << self[i] << " ";
-  } 
+  //for (int i = 0; i < self.size(); ++i){
+    //std::cout << self[i] << " ";
+    std:: cout << self.size() << std::endl;
+  //} 
 }
 
 #endif

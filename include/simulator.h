@@ -20,6 +20,7 @@ void showmenu(void){
   std::cout << "b) Buscar elemento" << std::endl;
   std::cout << "m) Mostrar tabla" << std::endl;
   std::cout << "r) Insertar datos aleatorios" << std::endl;
+  std::cout << "g) Mostrar intentos" << std::endl;
   std::cout << "q) Salir" << std::endl;
 }
 
@@ -72,6 +73,11 @@ void displayMenu(Table* table) {
         std::cin >> n;
         insertRandomKeys(table, n);
         std::cout << "Se almacenaron " << n << " datos aleatorios" << std::endl;
+        break;
+
+      case 'g': 
+        std::cout << "Numero de intentos: "  << table->getIntentos() << std::endl;  
+        table->resetIntentos();
         break;
 
       case 'q':

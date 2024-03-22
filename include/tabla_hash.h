@@ -30,7 +30,8 @@ class Tabla_hash_t {
     bool insert(Key& X);
     
     void print();
-    //int get_intentos(void);
+    int getIntentos();
+    void resetIntentos();
 
   private:
     unsigned tableSize;
@@ -38,6 +39,7 @@ class Tabla_hash_t {
     std::vector<Sequence<Key>*> table;
     DispersionFunction<Key>* fd;
     ExplorationFunction<Key>* fe;
+    int intentos;
 
 };
 
@@ -46,6 +48,7 @@ Tabla_hash_t<Key, Container>::Tabla_hash_t(unsigned tableSize, DispersionFunctio
   this->tableSize = tableSize;
   this->fd = fd;
   this->fe = nullptr;
+  this->intentos = 0;
   this->table.resize(tableSize);
   for (int i = 0; i < tableSize; ++i){
     this->table[i] = new DinamicSquence<Key>;
@@ -62,6 +65,7 @@ Tabla_hash_t<Key, Container>::Tabla_hash_t(unsigned tableSize,
   this->blockSize = blockSize;
   this->table.resize(tableSize);
   this->fe = fe;
+  this->intentos = 0;
     
   for (int i = 0; i < tableSize; ++i){
     this->table[i] = new StaticSequence<Key>(blockSize);
@@ -79,7 +83,7 @@ Tabla_hash_t<Key, Container>::~Tabla_hash_t(void){
 template <class Key, class Container>
 bool Tabla_hash_t<Key, Container>::search(Key& X){
   if (table[(*fd)(X)]->search(X)){
-    //sumar_intento();
+    intentos++;
     return true;
   }
   
@@ -93,7 +97,7 @@ bool Tabla_hash_t<Key, Container>::search(Key& X){
         return false;
       }
       iter++;
-      //sumar_intento();
+      intentos++;
     } while(iter <= tableSize);
   }
 
@@ -108,15 +112,16 @@ bool Tabla_hash_t<Key, Container>::insert(Key& X){
   }
 
   if (!this->table[(*fd)(X)]->isFull()){
+    intentos++;
     return this->table[(*fd)(X)]->insert(X);
-    //sumar_intento();
   } else {
     do{
       if(!this->table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->isFull()){
+        std::cout << "Esta lleno. Hace uso de función de exploración" << std::endl;
         return this->table[((*fd)(X) + (*fe)(X,iter)) % tableSize]->insert(X);
       } 
       iter++;
-      //sumar_intento();
+      intentos++;
     } while(iter <= this->tableSize);
   }
   return false;
@@ -124,16 +129,22 @@ bool Tabla_hash_t<Key, Container>::insert(Key& X){
 
 template <class Key, class Container>
 void Tabla_hash_t<Key, Container>::print() {
+  std::cout << std::endl;
+  std::cout << "Tabla Hash: " << std::endl;
   for (int i = 0; i < this->tableSize; ++i){
     std::cout << "[" << i << "]: ";
     this->table[i]->print();
-    std::cout << std::endl;
   }
 }
 
-/*template <class Key, class Container>
-int Tabla_hash_t<Key, Container>::get_intentos(void){
-    return intentos_;
-}*/
+template <class Key, class Container>
+int Tabla_hash_t<Key, Container>::getIntentos(void){
+  return intentos;
+}
+
+template <class Key, class Container>
+void Tabla_hash_t<Key, Container>::resetIntentos(void){
+  intentos = 0;
+}
 
 #endif

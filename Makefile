@@ -6,7 +6,7 @@ LIB     		:= lib
 LIBRARIES   :=
 
 EXECUTABLE  := run
-PARAMS    	:= -ts 5 -fd modulo -hash close -bs 3 -fe redispersion
+PARAMS    	:= 
 PARAMSOPEN  := -ts 5 -fd suma -hash open
 
 SOURCES := $(wildcard $(SRC)/*.cc)
